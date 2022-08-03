@@ -54,9 +54,9 @@ instr_team <- Microsoft365R::get_team("Instructors")
 
 # get folder name without slashes
 strip_slash <- function(folder){
-  folder <- str_remove(folder, "/$")
-  folder <- str_remove(folder, "\\\\$")
-  folder <- str_replace_all(folder, "\\\\", "/")
+  folder <- stringr::str_remove(folder, "/$")
+  folder <- stringr::str_remove(folder, "\\\\$")
+  folder <- stringr::str_replace_all(folder, "\\\\", "/")
   return(folder)
 }
 
