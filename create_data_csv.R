@@ -15,21 +15,14 @@ remotes::install_github(repo = "esciencecenter-digital-skills/training-infrastru
 
 
 library(traininginfrastructure)
-#library(Microsoft365R)
-#library(tidyverse)
-#library(rio)
-#library(nominatim)
-
-#exec_dir <- dirname(rstudioapi::getSourceEditorContext()$path) #the dir this script is in
-#setwd(exec_dir)
 
 ### Git Secret authorization - can only be done after following
 ### https://git-secret.io/
-#tokens     <- read.delim("tokens.txt", header=F)
-#token      <- stringr::str_split(tokens$V1, pattern=" ")[[1]][2]
+tokens     <- read.delim("tokens.txt", header=F)
+token      <- stringr::str_split(tokens$V1, pattern=" ")[[1]][2]
 
 ds_xlsx <- read_from_drive()
-
+dat_struct <- get_future_workshops(ds_xlsx)
 
 
 
