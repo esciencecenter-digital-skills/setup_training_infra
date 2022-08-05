@@ -11,8 +11,6 @@
 # - investigate possibility for automatic PR based on "ready"
 #-------------------------------------------
 
-remotes::install_github(repo = "esciencecenter-digital-skills/training-infrastructure@streamline_microsoft365_use", force=T)
-
 
 library(traininginfrastructure)
 
@@ -22,8 +20,6 @@ tokens     <- read.delim("tokens.txt", header=F)
 token      <- stringr::str_split(tokens$V1, pattern=" ")[[1]][2]
 
 ds_xlsx <- read_from_drive()
-dat_struct <- get_future_workshops(ds_xlsx)
-
 
 
 ### Select right information from Holy Excel Sheet
