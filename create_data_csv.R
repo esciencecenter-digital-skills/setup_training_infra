@@ -14,17 +14,8 @@
 
 library(traininginfrastructure)
 
-### Git Secret authorization - can only be done after following
-### https://git-secret.io/
-tokens     <- read.delim("tokens.txt", header=F)
-token      <- stringr::str_split(tokens$V1, pattern=" ")[[1]][2]
-
-ds_xlsx <- read_from_drive()
-
-
-### Select right information from Holy Excel Sheet
-ds_xlsx    <- ds_xlsx[ds_xlsx$startdate >= Sys.time(), ] # only read workshop dates after today
-dat_struct <- traininginfrastructure::get_future_workshops(ds_xlsx) # extracts relevant information for GH page from spreadsheet
+ds_xlsx <- read_from_drive() # download Holy Excel Sheet
+dat_struct <- get_future_workshops(ds_xlsx) # Select right information from Holy Excel Sheet
 
 ### Create folder per workshop that contains data.csv for the github page
 #TODO, should this be in a different spot?
