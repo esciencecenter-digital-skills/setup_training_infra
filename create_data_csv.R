@@ -11,29 +11,11 @@
 # - investigate possibility for automatic PR based on "ready"
 #-------------------------------------------
 
+
 library(traininginfrastructure)
-library(Microsoft365R)
-library(tidyverse)
-library(rio)
-library(nominatim)
 
-exec_dir <- dirname(rstudioapi::getSourceEditorContext()$path) #the dir this script is in
-setwd(exec_dir)
-
-### Git Secret authorization - can only be done after following
-### https://git-secret.io/
-tokens     <- read.delim("tokens.txt", header=F)
-token      <- stringr::str_split(tokens$V1, pattern=" ")[[1]][2]
-
-### Read Holy Excel Sheet
-instr_site <- Microsoft365R::get_sharepoint_site(site_url="https://nlesc.sharepoint.com/sites/instructors")
-drv        <- instr_site$get_drive()
-drv$download_file("General/Digital Skills Workshops 2022.xlsx", overwrite = T) #get the latest version of the excel sheet and overwrite the previous download
-ds_xlsx    <- rio::import("Digital Skills Workshops 2022.xlsx") #TODO: save using a portable filename. Consider adding to .gitignore
-
-### Select right information from Holy Excel Sheet
-ds_xlsx    <- ds_xlsx[ds_xlsx$startdate >= Sys.time(), ] # only read workshop dates after today
-dat_struct <- traininginfrastructure::get_future_workshops(ds_xlsx) # extracts relevant information for GH page from spreadsheet
+ds_xlsx <- read_from_drive() # download Holy Excel Sheet
+dat_struct <- get_future_workshops(ds_xlsx) # Select right information from Holy Excel Sheet
 
 ### Create folder per workshop that contains data.csv for the github page
 #TODO, should this be in a different spot?
