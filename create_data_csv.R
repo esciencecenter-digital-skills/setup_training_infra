@@ -11,37 +11,44 @@
 # - investigate possibility for automatic PR based on "ready"
 #-------------------------------------------
 
-remotes::install_github(repo = "esciencecenter-digital-skills/training-infrastructure@streamline_microsoft365_use", force=T)
-
-
+remotes::install_github(repo = "esciencecenter-digital-skills/training-infrastructure@separate-docs-functions", force=T)
 library(traininginfrastructure)
 
 ### Git Secret authorization - can only be done after following
 ### https://git-secret.io/
-tokens     <- read.delim("tokens.txt", header=F)
-token      <- stringr::str_split(tokens$V1, pattern=" ")[[1]][2]
 
 ds_xlsx <- read_from_drive()
-dat_struct <- get_future_workshops(ds_xlsx)
+#dat_struct <- get_future_workshops(ds_xlsx)
+
+# ### Select right information from Holy Excel Sheet
+# ds_xlsx    <- ds_xlsx[ds_xlsx$startdate >= Sys.time(), ] # only read workshop dates after today
+# dat_struct <- traininginfrastructure::get_future_workshops(ds_xlsx) # extracts relevant information for GH page from spreadsheet
+#
+# ### Create folder per workshop that contains data.csv for the github page
+# #TODO, should this be in a different spot?
+# #TODO this should be a function that can easily be re-run to update info
+# #TODO include upload to sharepoint
+# #TODO suppress warnings (or make them cleaner :))
+# traininginfrastructure::save_viable_data(dat_struct) #only saves a data file in its folder if the slug is longer than 10 characters
+#
+# ### Select workshops that are ready
+# ready_future <- na.omit(dat_struct$slug[dat_struct$ready=="yes"])
 
 
+info <- dat_struct[1,]
 
-### Select right information from Holy Excel Sheet
-ds_xlsx    <- ds_xlsx[ds_xlsx$startdate >= Sys.time(), ] # only read workshop dates after today
-dat_struct <- traininginfrastructure::get_future_workshops(ds_xlsx) # extracts relevant information for GH page from spreadsheet
+debrief_doc_info <- get_debrief_doc_info(info)
+plan_doc_info <- get_plan_doc_info(info)
+comms_doc_info <- get_comms_doc_info(info)
+render_debrief_doc(debrief_doc_info)
+render_plan(plan_doc_info)
+render_comms_doc(comms_doc_info)
 
-### Create folder per workshop that contains data.csv for the github page
-#TODO, should this be in a different spot?
-#TODO this should be a function that can easily be re-run to update info
-#TODO include upload to sharepoint
-#TODO suppress warnings (or make them cleaner :))
-traininginfrastructure::save_viable_data(dat_struct) #only saves a data file in its folder if the slug is longer than 10 characters
 
-### Select workshops that are ready
-ready_future <- na.omit(dat_struct$slug[dat_struct$ready=="yes"])
 
 
 instr_team <- Microsoft365R::get_team("Instructors")
+
 
 
 for (i in 1:length(ready_future)) { # pick a workshop
