@@ -3,8 +3,9 @@ Scripts to use the [`traininginfrastructure`](https://github.com/esciencecenter-
 
 
 ## How to use
-### Install dependencies
-1. Install the `traininginfrastructure` package 
-  - First install `remotes` packages: `install.packages("remotes")`
-  - Then: `remotes::install_github("esciencecenter-digital-skills/training-infrastructure")`
-2. Install [git-secret](https://git-secret.io/installation)
+
+### Installation
+```r
+install.packages("remotes")
+remotes::install_github("esciencecenter-digital-skills/training-infrastructure")
+```
